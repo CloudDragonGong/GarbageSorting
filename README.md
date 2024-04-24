@@ -7,3 +7,5 @@ https://github.com/garythung/trashnet
 模型
 
 https://github.com/ultralytics/ultralytics
+
+ok
