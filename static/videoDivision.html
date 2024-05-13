@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>垃圾分类</title>
+    <style>
+        .video-preview {
+            width: 300px;
+            height: 200px;
+            border: 1px solid #ccc;
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+    <h1>垃圾分类</h1>
+    <p>请选择视频，完成选择后点击上传</p>
+    
+    <input type="file" accept="video/*" id="videoInput" onchange="previewVideo()">
+    <br>
+
+    <div id="videoPreviewContainer"></div>
+
+    <button id="uploadButton" style="display: none;" onclick="uploadVideo()">上传视频</button>
+
+    <div id="resultContainer" style="display: none;">
+        <p>识别结果：</p>
+        <p id="smallCategory"></p>
+        <p id="largeCategory"></p>
+        <button onclick="reset()">重新识别</button>
+    </div>
+
+    <button onclick="redirect()">返回</button>
+
+    <script>
+        function previewVideo() {
+            const videoInput = document.getElementById('videoInput');
+            const files = videoInput.files;
+            const videoPreviewContainer = document.getElementById('videoPreviewContainer');
+
+            for (let i = 0; i < files.length; i++) {
+                const file = files[i];
+                const video = document.createElement('video');
+                video.src = URL.createObjectURL(file);
+                video.controls = true;
+                video.classList.add('video-preview');
+                videoPreviewContainer.appendChild(video);
+            }
+
+            document.getElementById('uploadButton').style.display = 'block';
+        }
+
+        function uploadVideo() {
+            const resultContainer = document.getElementById('resultContainer');
+            const smallCategories = ['塑料', '纸板', '玻璃', '易拉罐'];
+            const largeCategories = ['可回收垃圾', '干垃圾'];
+            const smallCategory = smallCategories[Math.floor(Math.random() * smallCategories.length)];
+            const largeCategory = largeCategories[Math.floor(Math.random() * largeCategories.length)];
+
+            document.getElementById('smallCategory').textContent = '小类别：' + smallCategory;
+            document.getElementById('largeCategory').textContent = '大类别：' + largeCategory;
+
+            resultContainer.style.display = 'block';
+            document.getElementById('uploadButton').style.display = 'none';
+        }
+
+        function reset() {
+            const videoPreviewContainer = document.getElementById('videoPreviewContainer');
+            videoPreviewContainer.innerHTML = ''; // 清空视频预览
+
+            document.getElementById('resultContainer').style.display = 'none';
+            document.getElementById('uploadButton').style.display = 'none';
+            document.getElementById('videoInput').value = ''; // 清空文件选择
+        }
+
+        function redirect() {
+            window.location.href = 'mainPage.html';
+        }
+    </script>
+</body>
+</html>
