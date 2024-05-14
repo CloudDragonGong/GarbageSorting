@@ -5,33 +5,87 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>垃圾分类</title>
     <style>
+        body
+        {
+            background-image:url(background.png);
+            background-size: 100% 100% ;
+        }
+        #title
+        {
+            width:70% ;
+            padding:5% ;
+            background: lightgrey ;
+            text-align: center;
+            /*border:1px solid gray;*/
+            border-radius: 10px 10px 10px 10px / 10px 10px 10px 10px;
+            position:relative;
+            left:10%;
+        }
+        #para_hint 
+        {
+            width:70% ;
+            padding:5% ;
+            background: lightgrey ;
+            text-align: center;
+            /*border:1px solid gray;*/
+            border-radius: 10px 10px 10px 10px / 10px 10px 10px 10px;
+            position:relative;
+            left:10%;
+        }
+        button
+        {
+            width:80% ;
+            height:50px ;
+            padding:10px ;
+            /*border:1px solid gray;*/
+            border-radius: 10px 10px 10px 10px / 10px 10px 10px 10px;
+            position:relative;
+            left:10%;
+        }
+        #resultContainer
+        {
+            width:80% ;
+            height:50px ;
+            padding:10px ;
+            /*border:1px solid gray;*/
+            border-radius: 10px 10px 10px 10px / 10px 10px 10px 10px;
+            position:relative;
+            left:10%;
+        }
         .video-preview {
-            width: 300px;
+            /*width: 300px;
             height: 200px;
             border: 1px solid #ccc;
-            margin-bottom: 10px;
+            margin-bottom: 10px;*/
+            width:80% ;
+            height:80% ;
+            /*padding:10px ;
+            /*border:1px solid gray;*/
+            border-radius: 10px 10px 10px 10px / 10px 10px 10px 10px;
+            position:relative;
+            left:10%;
         }
     </style>
 </head>
 <body>
-    <h1>垃圾分类</h1>
-    <p>请选择视频，完成选择后点击上传</p>
+    <h1 id="title">垃圾分类</h1>
+    <p id="para_hint">请选择视频，完成选择后点击上传</p>
     
-    <input type="file" accept="video/*" id="videoInput" onchange="previewVideo()">
-    <br>
-
-    <div id="videoPreviewContainer"></div>
-
+    <input type="file" accept="video/*" id="videoInput" onchange="previewVideo()" style="display: none;">
+    <button id="addButton" onclick="document.getElementById('videoInput').click();">选择视频</button>
     <button id="uploadButton" style="display: none;" onclick="uploadVideo()">上传视频</button>
+    <button id="reset" onclick="reset()" style="display: none;">重新识别</button>
+    <button onclick="redirect()">返回</button>
+    <div id="videoPreviewContainer"></div>
 
     <div id="resultContainer" style="display: none;">
         <p>识别结果：</p>
         <p id="smallCategory"></p>
         <p id="largeCategory"></p>
-        <button onclick="reset()">重新识别</button>
     </div>
-
-    <button onclick="redirect()">返回</button>
+    <br>
+    <br>
+    <br>
 
     <script>
         function previewVideo() {
@@ -52,6 +106,7 @@
         }
 
         function uploadVideo() {
+            alert("视频上传完成");
             const resultContainer = document.getElementById('resultContainer');
             const smallCategories = ['塑料', '纸板', '玻璃', '易拉罐'];
             const largeCategories = ['可回收垃圾', '干垃圾'];
@@ -63,6 +118,8 @@
 
             resultContainer.style.display = 'block';
             document.getElementById('uploadButton').style.display = 'none';
+            document.getElementById('addButton').style.display = 'none';
+            document.getElementById('reset').style.display = 'block';
         }
 
         function reset() {
@@ -71,6 +128,8 @@
 
             document.getElementById('resultContainer').style.display = 'none';
             document.getElementById('uploadButton').style.display = 'none';
+            document.getElementById('reset').style.display = 'none';
+            document.getElementById('addButton').style.display = 'block';
             document.getElementById('videoInput').value = ''; // 清空文件选择
         }
 

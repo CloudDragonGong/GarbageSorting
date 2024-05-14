@@ -5,6 +5,43 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>垃圾分类：图片部分</title>
 <style>
+  body
+  {
+    background-image:url(background.png);
+    background-size: 100% 100% ;
+  }
+  #title
+  {
+    width:70% ;
+    padding:5% ;
+    background: lightgrey ;
+    text-align: center;
+    /*border:1px solid gray;*/
+    border-radius: 10px 10px 10px 10px / 10px 10px 10px 10px;
+    position:relative;
+    left:10%;
+  }
+  #para_hint 
+  {
+    width:70% ;
+    padding:5% ;
+    background: lightgrey ;
+    text-align: center;
+    /*border:1px solid gray;*/
+    border-radius: 10px 10px 10px 10px / 10px 10px 10px 10px;
+    position:relative;
+    left:10%;
+  }
+  .button_inter
+  {
+    width:80% ;
+    height:50px ;
+    padding:10px ;
+    /*border:1px solid gray;*/
+    border-radius: 10px 10px 10px 10px / 10px 10px 10px 10px;
+    position:relative;
+    left:10%;
+  }
   #image-preview {
     display: flex;
     flex-wrap: wrap;
@@ -22,25 +59,29 @@
     position: absolute;
     top: 5px;
     right: 5px;
+    width:80px;
+    height:30px;
     background-color: red;
     color: white;
+    border-radius: 10px 10px 10px 10px / 10px 10px 10px 10px;
+    /*
     border: none;
     border-radius: 50%;
     padding: 5px;
-    cursor: pointer;
+    cursor: pointer;*/
   }
 </style>
 </head>
 <body>
-<h1>垃圾分类</h1>
-<p>请选择图片，完成选择后点击上传</p>
+<h1 id="title">垃圾分类</h1>
+<p id="para_hint">请选择图片，完成选择后点击上传</p>
 <input type="file" id="file-input" accept="image/*" multiple style="display: none;">
-<button onclick="document.getElementById('file-input').click();" id="add-btn">添加图片</button>
-<button onclick="clearImages()" id="clear-btn" style="display: none;">清除图片</button>
-<button onclick="uploadImages()" id="upload-btn" style="display: none;">上传图片</button>
-<button onclick="resetRecognition()" id="reset-btn" style="display: none;">重新识别</button>
+<button onclick="document.getElementById('file-input').click();" id="add-btn" class="button_inter">添加图片</button>
+<button onclick="clearImages()" id="clear-btn" style="display: none;" class="button_inter">清除图片</button>
+<button onclick="uploadImages()" id="upload-btn" style="display: none;" class="button_inter">上传图片</button>
+<button onclick="resetRecognition()" id="reset-btn" style="display: none;" class="button_inter">重新识别</button>
+<a href="mainPage.html"><button class="button_inter">返回</button></a>
 <div id="image-preview"></div>
-<a href="mainPage.html"><button>返回</button></a>
 
 <script>
 function uploadImages() {
