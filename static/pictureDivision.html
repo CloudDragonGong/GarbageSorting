@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>垃圾分类：图片部分</title>
+<style>
+  body
+  {
+    background-image:url(background.png);
+    background-size: 100% 100% ;
+  }
+  #title
+  {
+    width:70% ;
+    padding:5% ;
+    background: lightgrey ;
+    text-align: center;
+    /*border:1px solid gray;*/
+    border-radius: 10px 10px 10px 10px / 10px 10px 10px 10px;
+    position:relative;
+    left:10%;
+  }
+  #para_hint 
+  {
+    width:70% ;
+    padding:5% ;
+    background: lightgrey ;
+    text-align: center;
+    /*border:1px solid gray;*/
+    border-radius: 10px 10px 10px 10px / 10px 10px 10px 10px;
+    position:relative;
+    left:10%;
+  }
+  .button_inter
+  {
+    width:80% ;
+    height:50px ;
+    padding:10px ;
+    /*border:1px solid gray;*/
+    border-radius: 10px 10px 10px 10px / 10px 10px 10px 10px;
+    position:relative;
+    left:10%;
+  }
+  #image-preview {
+    display: flex;
+    flex-wrap: wrap;
+  }
+  .preview-item {
+    margin: 10px;
+    position: relative;
+  }
+  .preview-item img {
+    width: 300px;
+    height: 200px;
+    object-fit: cover;
+  }
+  .cancel-btn {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    width:80px;
+    height:30px;
+    background-color: red;
+    color: white;
+    border-radius: 10px 10px 10px 10px / 10px 10px 10px 10px;
+    /*
+    border: none;
+    border-radius: 50%;
+    padding: 5px;
+    cursor: pointer;*/
+  }
+</style>
+</head>
+<body>
+<h1 id="title">垃圾分类</h1>
+<p id="para_hint">请选择图片，完成选择后点击上传</p>
+<input type="file" id="file-input" accept="image/*" multiple style="display: none;">
+<button onclick="document.getElementById('file-input').click();" id="add-btn" class="button_inter">添加图片</button>
+<button onclick="clearImages()" id="clear-btn" style="display: none;" class="button_inter">清除图片</button>
+<button onclick="uploadImages()" id="upload-btn" style="display: none;" class="button_inter">上传图片</button>
+<button onclick="resetRecognition()" id="reset-btn" style="display: none;" class="button_inter">重新识别</button>
+<a href="mainPage.html"><button class="button_inter">返回</button></a>
+<div id="image-preview"></div>
+
+<script>
+function uploadImages() {
+  alert("图片上传完成");
+  document.getElementById("clear-btn").style.display = "none";
+  document.getElementById("file-input").value = "";
+  document.getElementById("upload-btn").style.display = "none";
+  document.getElementById("reset-btn").style.display = "inline-block";
+  document.getElementById("add-btn").style.display = "none";
+
+  const previews = document.querySelectorAll(".preview-item");
+  previews.forEach(preview => {
+    const cancelButton = preview.querySelector(".cancel-btn");
+    cancelButton.remove();
+
+    const randomTrashType = ["塑料", "纸板", "玻璃", "易拉罐"][Math.floor(Math.random() * 4)];
+    const randomTrashCategory = ["可回收垃圾", "干垃圾"][Math.floor(Math.random() * 2)];
+    const resultText = document.createElement("p");
+    resultText.innerHTML = `识别结果：${randomTrashType} (${randomTrashCategory})`;
+    preview.appendChild(resultText);
+  });
+}
+
+function clearImages() {
+  document.getElementById("image-preview").innerHTML = "";
+  document.getElementById("clear-btn").style.display = "none";
+  document.getElementById("upload-btn").style.display = "none";
+  document.getElementById("reset-btn").style.display = "none";
+  document.getElementById("add-btn").style.display = "inline-block";
+}
+
+function resetRecognition() {
+  document.getElementById("image-preview").innerHTML = "";
+  document.getElementById("reset-btn").style.display = "none";
+  document.getElementById("file-input").value = "";
+  document.getElementById("add-btn").style.display = "inline-block";
+}
+
+document.getElementById("file-input").addEventListener("change", function(event) {
+  const files = event.target.files;
+  const previewContainer = document.getElementById("image-preview");
+  Array.from(files).forEach(file => {
+    const reader = new FileReader();
+    reader.onload = function() {
+      const img = document.createElement("img");
+      img.src = reader.result;
+      const previewItem = document.createElement("div");
+      previewItem.className = "preview-item";
+      previewItem.appendChild(img);
+      previewContainer.appendChild(previewItem);
+
+      const cancelButton = document.createElement("button");
+      cancelButton.innerHTML = "取消选择";
+      cancelButton.className = "cancel-btn";
+      cancelButton.addEventListener("click", () => {
+        previewItem.remove();
+      });
+      previewItem.appendChild(cancelButton);
+    }
+    reader.readAsDataURL(file);
+  });
+  document.getElementById("clear-btn").style.display = "inline-block";
+  document.getElementById("upload-btn").style.display = "inline-block";
+});
+</script>
+</body>
+</html>
