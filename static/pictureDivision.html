@@ -126,7 +126,7 @@ document.getElementById("file-input").addEventListener("change", function(event)
   Array.from(files).forEach(file => {
     const reader = new FileReader();
     reader.onload = function() {
-      const img = document.createElement("img");
+      const img = document.createElement("imgs");
       img.src = reader.result;
       const previewItem = document.createElement("div");
       previewItem.className = "preview-item";

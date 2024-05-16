@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Flask Image Fetch with Ajax</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            $('#fetch-image').click(function() {
+                $.ajax({
+                    url: 'http://127.0.0.1:5000/get_image',
+                    type: 'GET',
+                    xhrFields: {
+                        responseType: 'blob'
+                    },
+                    success: function(data, status, xhr) {
+                        var urlCreator = window.URL || window.webkitURL;
+                        var imageUrl = urlCreator.createObjectURL(data);
+                        $('#image-container').empty();
+                        var img = $('<imgs>').attr('src', imageUrl);
+                        $('#image-container').append(img);
+                    },
+                    error: function(xhr, status, error) {
+                        console.error('Error fetching image: ' + error);
+                    }
+                });
+            });
+        });
+    </script>
+</head>
+<body>
+    <button id="fetch-image">图片</button>
+    <div id="image-container"></div>
+</body>
+</html>
