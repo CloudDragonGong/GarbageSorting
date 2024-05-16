@@ -1,7 +1,10 @@
 from flask import Flask
 
-app = Flask(__name__)
+UPLOAD_FOLDER = '/imgs'
+ALLOWED_EXTENSIONS = {'txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif'}
 
-@app.route('/')
-def hello():
-    return 'Welcome to My Watchlist!'
+app = Flask(__name__)
+app.config['IMAGE_POSITION'] = UPLOAD_FOLDER
+
+if __name__ == '__main__':
+    app.run(debug=True)
