@@ -2,7 +2,10 @@ import os
 from main import *
 from flask import send_file, flash, request, redirect, url_for, jsonify
 from werkzeug.utils import secure_filename
+
+from main import app
 from model.YOLO_classifier import YoloClassifier
+from server import response
 
 
 def allowed_file(filename):
@@ -52,3 +55,4 @@ def SingleImgSave():
         filename = secure_filename(file.filename)
         file.save(os.path.join(app.config['IMAGE_POSITION'], filename))
         return response.response(200, "ok")
+    return response.response(500, "Incorrect imgs format")
