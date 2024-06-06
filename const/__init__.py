@@ -1,0 +1,1 @@
+SINGLE_IMG_ERROR = "single image error"

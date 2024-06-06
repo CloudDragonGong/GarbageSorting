@@ -11,7 +11,20 @@ from server import response
 def allowed_file(filename):
     return '.' in filename and \
         filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
-
+@app.post('/img_upload/single')
+def SingleImgUpload():
+    """
+    single img upload
+    """
+    if 'img' not in request.files:
+        app.logger.error("The image format is incorrect")
+        return response.response(500, "The image format is incorrect")
+    file = request.files['img']
+    if file and allowed_file(file.filename):
+        filename = secure_filename(file.filename)
+        file.save(os.path.join(app.config['IMAGE_POSITION'], filename))
+        return response.response(200, "ok")
+    return response.response(500, "Incorrect imgs format")
 
 @app.post('/img_classify/single')
 def SingleImgClassify():

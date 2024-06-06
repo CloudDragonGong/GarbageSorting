@@ -13,6 +13,8 @@ ALLOWED_EXTENSIONS = {'txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif'}
 
 # const
 IMAGE_POSITION = 'IMAGE_POSITION'
+UPLOAD_FOLDER = 'upload_folder'
+DOWNLOAD_FOLDER = 'download_folder'
 IP_ADDRESS = 'IP'
 PORT = "PORT"
 # config
@@ -45,5 +47,5 @@ def read_argv():
 
 
 if __name__ == '__main__':
-    app.config[IP_ADDRESS], app.config[PORT], app.config[IMAGE_POSITION] = conf.read_config(read_argv())
+    app.config[IP_ADDRESS], app.config[PORT], app.config[UPLOAD_FOLDER] ,app.config[DOWNLOAD_FOLDER]= conf.read_config(read_argv())
     app.run(host=app.config[IP_ADDRESS], port=app.config[PORT], debug=True)
