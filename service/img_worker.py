@@ -1,3 +1,4 @@
+import const
 from model import YoloClassifier
 from const import *
 
@@ -9,8 +10,9 @@ class ImgWorker():
 
     def get_img_res(self, img_path: str) -> str:
         try:
-            res_path = self.worker.classfiyOneImg(img_path, self.img_output_folder_path)
-            return res_path
+            filename = self.worker.classfiyOneImg(img_path, self.img_output_folder_path)
+            if filename is None:
+                return const.FILE_NOT_FOUND
+            return filename
         except Exception as e:
-            print(e)
             return SINGLE_IMG_ERROR

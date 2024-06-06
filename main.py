@@ -4,6 +4,8 @@ import sys
 from flask import Flask
 from flask_cors import CORS
 from flask import send_file, flash, request, redirect, url_for, jsonify
+
+import model
 from server import response
 from werkzeug.utils import secure_filename
 import conf
@@ -23,10 +25,13 @@ IP = "127.0.0.1"
 PORT = 5000
 CONFIG_FILE = 'config.json'
 
+
+
+# init
 app = Flask(__name__)
 CORS(app)
 app.config[IMAGE_POSITION] = UPLOAD_FOLDER
-
+yolo = model.YoloClassifier()
 
 from server.server import *
 

@@ -2,6 +2,9 @@ import os
 import configparser
 
 def read_config(config_path):
+    if not os.path.exists(config_path):
+        print("config not found")
+        raise FileNotFoundError
     config_handler = configparser.ConfigParser()
     config_handler.read(config_path)
     ip = config_handler['machine']['ip']

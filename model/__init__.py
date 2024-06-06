@@ -1,1 +1,1 @@
-from YOLO_classifier import *
+from .YOLO_classifier import *
