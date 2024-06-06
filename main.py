@@ -4,6 +4,8 @@ import sys
 from flask import Flask
 from flask_cors import CORS
 from flask import send_file, flash, request, redirect, url_for, jsonify
+
+import model
 from server import response
 from werkzeug.utils import secure_filename
 import conf
@@ -13,6 +15,8 @@ ALLOWED_EXTENSIONS = {'txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif'}
 
 # const
 IMAGE_POSITION = 'IMAGE_POSITION'
+UPLOAD_FOLDER = 'upload_folder'
+DOWNLOAD_FOLDER = 'download_folder'
 IP_ADDRESS = 'IP'
 PORT = "PORT"
 # config
@@ -21,10 +25,13 @@ IP = "127.0.0.1"
 PORT = 5000
 CONFIG_FILE = 'config.json'
 
+
+
+# init
 app = Flask(__name__)
 CORS(app)
 app.config[IMAGE_POSITION] = UPLOAD_FOLDER
-
+yolo = model.YoloClassifier()
 
 from server.server import *
 
@@ -45,5 +52,5 @@ def read_argv():
 
 
 if __name__ == '__main__':
-    app.config[IP_ADDRESS], app.config[PORT], app.config[IMAGE_POSITION] = conf.read_config(read_argv())
+    app.config[IP_ADDRESS], app.config[PORT], app.config[UPLOAD_FOLDER] ,app.config[DOWNLOAD_FOLDER]= conf.read_config(read_argv())
     app.run(host=app.config[IP_ADDRESS], port=app.config[PORT], debug=True)

@@ -1,0 +1,3 @@
+SINGLE_IMG_ERROR = "single image error"
+SINGLE_IMG_NOT_FOUND = "single image not found"
+FILE_NOT_FOUND = "file not found"
