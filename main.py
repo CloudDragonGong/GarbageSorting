@@ -16,7 +16,7 @@ IMAGE_POSITION = 'IMAGE_POSITION'
 IP_ADDRESS = 'IP'
 PORT = "PORT"
 # config
-UPLOAD_FOLDER = 'E:\myrepository\GarbageSorting\imgs'
+UPLOAD_FOLDER = 'imgs'
 IP = "127.0.0.1"
 PORT = 5000
 CONFIG_FILE = 'config.json'
