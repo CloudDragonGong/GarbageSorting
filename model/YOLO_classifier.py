@@ -23,7 +23,7 @@ class YoloClassifier():
         return single_img_file_name
         pass
         
-    def classify_video(self):
+    def classifyvideo(self):
     
         video_path= os.path.join(self.video_folder, self.video_name)  
         if not os.path.isfile(video_path):  
