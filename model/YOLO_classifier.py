@@ -1,5 +1,4 @@
 from abc import ABCMeta, abstractmethod
-from ultralytics.utils import SETTINGS
 
 class YoloClassifier():
     def __init__(self,img_folder, single_img_file_name):
@@ -17,9 +16,10 @@ class YoloClassifier():
             raise FileNotFoundError(f"File {self.single_img_file_name} not found.")  
         results = self.model.predict(img_path,save=True)
         """通过修改ultralytics/settings.yaml配置文件更改保存路径
-        以下通过代码控制 需要用到from ultralytics.utils import SETTINGS
-        """
+        以下通过代码控制
+        from ultralytics.utils import SETTINGS
         update_params = {'runs_dir': img_folder}
         SETTINGS.update(update_params)
+        """
         return single_img_file_name
         pass
