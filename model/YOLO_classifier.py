@@ -18,10 +18,8 @@ class YoloClassifier():
         img_path = os.path.join(self.img_folder, self.single_img_file_name)  
         if not os.path.isfile(img_path):  
             raise FileNotFoundError(f"File {self.single_img_file_name} not found.")  
-        results = self.model.predict(img_path,save=True)
-       
+        results = self.model.predict(img_path,save=True)     
         return single_img_file_name
-        pass
         
     def classifyvideo(self):
     
@@ -30,5 +28,3 @@ class YoloClassifier():
             raise FileNotFoundError(f"File {self.video_name} not found.")  
         results = self.model.predict(video_path,save=True)
         return video_name
-        
-        pass
