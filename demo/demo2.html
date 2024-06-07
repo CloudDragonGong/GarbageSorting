@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Ajax</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        let imageUrl = '';
+        $(document).ready(function() {
+            $('#upload-image').click(function() {
+                const fileInput = $('#file-input')[0];
+                if (fileInput.files.length === 0) {
+                    alert('选择一张图片');
+                    return;
+                }
+
+                const formData = new FormData();
+                formData.append('img', fileInput.files[0]);
+
+                $.ajax({
+                    url: 'http://127.0.0.1:5000/img_upload/single',
+                    type: 'POST',
+                    data: formData,
+                    processData: false,
+                    contentType: false,
+                    success: function(response) {
+                        console.log("server response:",response)
+                        if (response.data.image_url) {
+                            const baseUrl = 'http://127.0.0.1:5000';
+                            imageUrl = baseUrl + response.data.image_url;
+                            alert('图片上传成功');
+                        } else {
+                            console.error('Error: No image_url in response');
+                        }
+                    },
+                    error: function(xhr, status, error) {
+                        console.error('Error uploading image: ' + error);
+                    }
+                });
+            });
+
+            $('#fetch-image').click(function() {
+                if (!imageUrl) {
+                    alert('请先上传图片！');
+                    return;
+                }
+
+                $.ajax({
+                    url: imageUrl,
+                    type: 'GET',
+                    xhrFields: {
+                        responseType: 'blob'
+                    },
+                    success: function(data, status, xhr) {
+                        const urlCreator = window.URL || window.webkitURL;
+                        const imgUrl = urlCreator.createObjectURL(data);
+                        $('#image-container').empty();
+                        const img = $('<img>').attr('src', imgUrl);
+                        $('#image-container').append(img);
+                    },
+                    error: function(xhr, status, error) {
+                        console.error('Error fetching image: ' + error);
+                    }
+                });
+            });
+        });
+    </script>
+</head>
+<body>
+<input type="file" id="file-input">
+<button id="upload-image">上传图片</button>
+<button id="fetch-image">获取图片</button>
+<div id="image-container"></div>
+</body>
+</html>

@@ -8,7 +8,7 @@
         $(document).ready(function() {
             $('#fetch-image').click(function() {
                 $.ajax({
-                    url: 'http://127.0.0.1:5000/get_image',
+                    url: 'http://127.0.0.1:5000/img_download/output_3a35ec38-cf79-4010-bb1d-1377811445b5.png',
                     type: 'GET',
                     xhrFields: {
                         responseType: 'blob'
@@ -17,7 +17,7 @@
                         var urlCreator = window.URL || window.webkitURL;
                         var imageUrl = urlCreator.createObjectURL(data);
                         $('#image-container').empty();
-                        var img = $('<imgs>').attr('src', imageUrl);
+                        var img = $('<img>').attr('src', imageUrl);
                         $('#image-container').append(img);
                     },
                     error: function(xhr, status, error) {
@@ -30,6 +30,7 @@
 </head>
 <body>
     <button id="fetch-image">图片</button>
+    <button id="upload-image">上传图片</button>
     <div id="image-container"></div>
 </body>
 </html>
