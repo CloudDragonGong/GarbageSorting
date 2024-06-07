@@ -9,7 +9,7 @@ class YoloClassifier():
         self.model = YOLO(model_path)
 
     def classifyOneImg(self):
-       """通过修改ultralytics/settings.yaml配置文件更改保存路径
+        """通过修改ultralytics/settings.yaml配置文件更改保存路径
         以下通过代码控制
         from ultralytics.utils import SETTINGS
         update_params = {'runs_dir': img_folder}
