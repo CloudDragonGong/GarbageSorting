@@ -1,7 +1,7 @@
 from abc import ABCMeta, abstractmethod
 
 class YoloClassifier():
-    def __init__(self,img_folder, single_img_file_name):
+    def __init__(self,img_folder, single_img_file_name,video_folder,video_name):
         self.single_img_file_name = single_img_file_name
         self.img_folder = img_folder
         self.video_name = video_name
@@ -23,10 +23,10 @@ class YoloClassifier():
         return single_img_file_name
         pass
         
-    def classify_video():
+    def classify_video(self):
     
         video_path= os.path.join(self.video_folder, self.video_name)  
-        if not os.path.isfile(img_path):  
+        if not os.path.isfile(video_path):  
             raise FileNotFoundError(f"File {self.video_name} not found.")  
         results = self.model.predict(video_path,save=True)
         return video_name
