@@ -15,15 +15,16 @@ class YoloClassifier():
         update_params = {'runs_dir': img_folder}
         SETTINGS.update(update_params)
         """
-        img_path = os.path.join(self.img_folder, self.single_img_file_name)  
+        img_path = self.img_folder+'/'+self.single_img_file_name
         if not os.path.isfile(img_path):  
             raise FileNotFoundError(f"File {self.single_img_file_name} not found.")  
-        results = self.model.predict(img_path,save=True)     
+        print(img_path)
+        results = self.model.predict(img_path,save=True)
         return single_img_file_name
         
     def classifyvideo(self):
     
-        video_path= os.path.join(self.video_folder, self.video_name)  
+        video_path= self.video_folder+'/'+self.video_name
         if not os.path.isfile(video_path):  
             raise FileNotFoundError(f"File {self.video_name} not found.")  
         results = self.model.predict(video_path,save=True)
