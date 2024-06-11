@@ -4,13 +4,13 @@ import os
 
 app = Flask(__name__)
 CORS(app)
-UPLOAD_FOLDER = r'./uploads/'
+UPLOAD_FOLDER = r'../uploads'
 app.config['demo upload path'] = UPLOAD_FOLDER
 
 
 @app.route('/get_image')
 def get_image():
-    image_path = os.path.join(app.config['demo upload path'], 'example.png')
+    image_path = os.path.join(app.config['demo upload path'], 'QQ20211113-0.JPG')
 
     if not os.path.exists(image_path):
         abort(404)
