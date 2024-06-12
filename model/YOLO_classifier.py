@@ -1,4 +1,5 @@
-from abc import ABCMeta, abstractmethod
+import os
+from ultralytics import YOLO
 
 class YoloClassifier():
     def __init__(self,model_path,img_folder,single_img_file_name,video_folder,video_name):
@@ -20,7 +21,7 @@ class YoloClassifier():
             raise FileNotFoundError(f"File {self.single_img_file_name} not found.")  
         print(img_path)
         results = self.model.predict(img_path,save=True)
-        return single_img_file_name
+        return self.single_img_file_name
         
     def classifyvideo(self):
     
@@ -28,4 +29,4 @@ class YoloClassifier():
         if not os.path.isfile(video_path):  
             raise FileNotFoundError(f"File {self.video_name} not found.")  
         results = self.model.predict(video_path,save=True)
-        return video_name
+        return self.video_name
