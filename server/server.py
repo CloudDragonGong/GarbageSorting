@@ -27,17 +27,18 @@ def SingleImgUpload():
         return response.response(500, "The image format is incorrect")
     file = request.files['img']
     if file and allowed_file(file.filename):
-        filename = secure_filename(file.filename)
+        filename = utils.generate_unique_file_name(secure_filename(file.filename))
         file.save(os.path.join(app.config[UPLOAD_FOLDER], filename))
+
         worker = service.ImgWorker(app.config[UPLOAD_FOLDER], main.yolo)
-        res_filename,type = worker.get_img_res(os.path.join(app.config[UPLOAD_FOLDER], filename))
+        res_filename, type = worker.get_img_res(os.path.join(app.config[UPLOAD_FOLDER], filename))
         if res_filename is const.SINGLE_IMG_ERROR:
             app.logger.error(res_filename)
             return response.response(500, const.SINGLE_IMG_ERROR)
         if res_filename is not None and os.path.exists(os.path.join(app.config[DOWNLOAD_FOLDER], res_filename)):
             reply = {
                 "image_url": "/img_download/" + res_filename,
-                "type":type,
+                "type": type,
             }
             return response.response(200, "ok", reply)
         else:
@@ -45,6 +46,7 @@ def SingleImgUpload():
             return response.response(500, const.SINGLE_IMG_ERROR)
     app.logger.error("file is not allowed or none")
     return response.response(500, "file is not allowed or none")
+
 
 @app.route('/img_download/<filename>')
 def SingleImgDownload(filename):

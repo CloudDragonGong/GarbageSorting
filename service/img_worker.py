@@ -15,8 +15,7 @@ class ImgWorker():
         try:
             type = "test"
             output_filename = utils.generate_unique_file_name("output.png")
-            # self.worker.classfiyOneImg(img_path,str(os.path.join(self.img_output_folder_path,output_filename)))
-            utils.mutation(r"./uploads",output_filename)
+            self.worker.classfiyOneImg(img_path,str(os.path.join(self.img_output_folder_path,output_filename)))
             if output_filename is None:
                 return const.FILE_NOT_FOUND, None
             return output_filename, type
