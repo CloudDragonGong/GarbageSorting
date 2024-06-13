@@ -29,7 +29,7 @@ class YoloClassifier():
         else:
             os.makedirs(self.img_save_folder)
             cv2.imwrite(save_path, resimg)
-        print("******Result saved :"+save_path+"******")
+        print("******Classification result of single image saved :"+save_path+"******")
         return self.img_save_folder,self.single_img_file_name,save_path
     
     def classifyvideo(self):
@@ -72,7 +72,7 @@ class YoloClassifier():
         # 释放读取和写入对象
         input_video.release()
         output_video.release()
-        print("******Result saved :"+save_path+"******")
+        print("******Classification result of video saved :"+save_path+"******")
         return self.video_save_folder,self.video_name,save_path
 '''
 # 使用示例  
