@@ -30,12 +30,10 @@ class YoloClassifier():
         print("******Classification result of single image saved :" + save_path + "******")
         return save_path, type
 
-    def classify_video(self):
-        video_path = self.video_folder + '/' + self.video_name  # .../*.mp4
-        # 视频存储路径
-        save_path = self.video_save_folder + "/" + self.video_name
-        if not os.path.exists(self.video_save_folder):
-            os.makedirs(self.video_save_folder)
+    def classify_video(self,video_path,video_out_filename):
+        save_path = os.path.join(self.video_out_folder, video_out_filename)
+        if not os.path.exists(self.video_out_folder):
+            os.makedirs(self.video_out_folder)
         input_video = cv2.VideoCapture(video_path)
         # 获取视频帧率和大小
         fps = int(input_video.get(cv2.CAP_PROP_FPS))
@@ -47,6 +45,7 @@ class YoloClassifier():
         # 设置整个视频处理的进度条
         total_frames = int(input_video.get(cv2.CAP_PROP_FRAME_COUNT))
         pbar = tqdm(total=total_frames, desc="Processing video", unit="frames")
+        type_list = []
         # 处理视频帧
         for _ in range(total_frames):
             # 读取某一帧
@@ -70,11 +69,11 @@ class YoloClassifier():
         # 释放读取和写入对象
         input_video.release()
         output_video.release()
-        print("******Classification result of video saved :" + save_path + "******")
-        return self.video_save_folder, self.video_name, save_path
+        print("******Classification result of video saved :" + str(save_path) + "******")
+        return save_path, type_list
 
 
 if __name__ == "__main__":
-    yolo = YoloClassifier("./models/best.pt", "imgs", "")
-    path = yolo.classify_one_img("imgs/111.png", "111_out.png")
-    print(path)
+    yolo = YoloClassifier("../models/best.pt", "../imgs", "")
+    path,type = yolo.classify_one_img("../imgs/78969a6a22595394a95641b66ea7b38e.jpg", "78969a6a22595394a95641b66ea7b38e_out.jpg")
+    print(path,type)

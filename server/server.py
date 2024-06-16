@@ -28,10 +28,10 @@ def SingleImgUpload():
     file = request.files['img']
     if file and allowed_file(file.filename):
         filename = utils.generate_unique_file_name(secure_filename(file.filename))
-        file.save(os.path.join(app.config[UPLOAD_FOLDER], filename))
-
+        input_path = os.path.join(app.config[UPLOAD_FOLDER], filename)
+        file.save(input_path)
         worker = service.ImgWorker(app.config[UPLOAD_FOLDER], main.yolo)
-        res_filename, type = worker.get_img_res(os.path.join(app.config[UPLOAD_FOLDER], filename))
+        res_filename, type = worker.get_img_res(img_path=input_path)
         if res_filename is const.SINGLE_IMG_ERROR:
             app.logger.error(res_filename)
             return response.response(500, const.SINGLE_IMG_ERROR)

@@ -32,7 +32,7 @@ CONFIG_FILE = 'config.json'
 app = Flask(__name__)
 CORS(app)
 app.config[IP_ADDRESS], app.config[PORT], app.config[UPLOAD_FOLDER] ,app.config[DOWNLOAD_FOLDER] , app.config[MODLE_PATH] = conf.read_config(conf.read_argv())
-yolo = model.YoloClassifier()
+yolo = model.YoloClassifier(app.config[MODLE_PATH], app.config[DOWNLOAD_FOLDER], app.config[DOWNLOAD_FOLDER])
 
 from server.server import *
 

@@ -13,7 +13,7 @@ def read_config(config_path):
     port = config_handler['machine']['port']
     upload_folder = config_handler['img_path']['upload_folder']
     download_folder = config_handler['img_path']['download_folder']
-    model_path = config_handler['model_path']['model_path']
+    model_path = config_handler['models']['model_path']
     return ip, port, upload_folder,download_folder,model_path
 
 def read_argv():
