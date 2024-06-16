@@ -19,6 +19,7 @@ UPLOAD_FOLDER = 'upload_folder'
 DOWNLOAD_FOLDER = 'download_folder'
 IP_ADDRESS = 'IP'
 PORT = "PORT"
+MODLE_PATH ='model_path'
 # config
 UPLOAD_FOLDER = 'imgs'
 IP = "127.0.0.1"
@@ -30,27 +31,13 @@ CONFIG_FILE = 'config.json'
 # init
 app = Flask(__name__)
 CORS(app)
-app.config[IMAGE_POSITION] = UPLOAD_FOLDER
-yolo = model.YoloClassifier()
+app.config[IP_ADDRESS], app.config[PORT], app.config[UPLOAD_FOLDER] ,app.config[DOWNLOAD_FOLDER] , app.config[MODLE_PATH] = conf.read_config(conf.read_argv())
+yolo = model.YoloClassifier(app.config[MODLE_PATH], app.config[DOWNLOAD_FOLDER], app.config[DOWNLOAD_FOLDER])
 
 from server.server import *
 
-def read_argv():
-    config_path = ''
-    try:
-        opts, args = getopt.getopt(sys.argv[1:], "hc:", ["help", "config="])
-    except getopt.GetoptError as err:
-        print("main.py -c <config file path>")
-        sys.exit(2)
-    for opt, arg in opts:
-        if opt in ("-h", "--help"):
-            print("main.py -c <config file path>")
-            sys.exit()
-        elif opt in ("-c", "--config"):
-            config_path = arg
-    return config_path
+
 
 
 if __name__ == '__main__':
-    app.config[IP_ADDRESS], app.config[PORT], app.config[UPLOAD_FOLDER] ,app.config[DOWNLOAD_FOLDER]= conf.read_config(read_argv())
     app.run(host=app.config[IP_ADDRESS], port=app.config[PORT], debug=True)
