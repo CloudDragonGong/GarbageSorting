@@ -2,8 +2,8 @@ import os
 import cv2
 from tqdm import tqdm
 from ultralytics import YOLO
-
-
+import torch
+import const
 class YoloClassifier():
     def __init__(self, model_path, img_out_folder, video_out_folder):
         self.img_out_folder = img_out_folder
@@ -17,8 +17,12 @@ class YoloClassifier():
         img = cv2.imread(img_path)
         res = self.model.predict(source=img, save=False)
         resimg = res[0].plot()
-        # todo: get type kevin 快写
-        type = ""
+        type_list= {}
+        for b in res[0].boxes:
+            type_index = int(b.cls)
+            type_name  =const.type_name[type_index]
+            type_class = const.type_map[type_name]
+            type_list[type_name] = type_class
         save_path = os.path.join(self.img_out_folder, img_out_filename)
 
         # 图片存储路径
@@ -27,8 +31,8 @@ class YoloClassifier():
         else:
             os.makedirs(self.img_out_folder)
             cv2.imwrite(save_path, resimg)
-        print("******Classification result of single image saved :" + save_path + "******")
-        return save_path, type
+        print("******Classification result of single image saved ,and type :" + save_path + "  " + str(type_list) + "******")
+        return save_path,type_list
 
     def classify_video(self,video_path,video_out_filename):
         save_path = os.path.join(self.video_out_folder, video_out_filename)
@@ -75,5 +79,5 @@ class YoloClassifier():
 
 if __name__ == "__main__":
     yolo = YoloClassifier("../models/best.pt", "../imgs", "")
-    path,type = yolo.classify_one_img("../imgs/78969a6a22595394a95641b66ea7b38e.jpg", "78969a6a22595394a95641b66ea7b38e_out.jpg")
+    path,type = yolo.classify_one_img("../imgs/download (1).jpeg", "download (1)_out.jpg")
     print(path,type)

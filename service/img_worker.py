@@ -14,9 +14,9 @@ class ImgWorker():
     def get_img_res(self, img_path) -> (str, str):
         try:
             output_filename = utils.generate_unique_file_name("output.png")
-            _, type = self.worker.classify_one_img(img_path, output_filename)
+            _, type_map = self.worker.classify_one_img(img_path, output_filename)
             if output_filename is None:
                 return const.FILE_NOT_FOUND, None
-            return output_filename, type
+            return output_filename,str(type_map)
         except Exception as e:
             return str(e), None
