@@ -6,13 +6,9 @@
   <component name="ChangeListManager">
     <list default="true" id="6fdcb8ca-fbe6-4aad-9df5-9f0906c97913" name="Changes" comment="feat">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/conf/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/conf/__init__.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/conf/config_parse.py" beforeDir="false" afterPath="$PROJECT_DIR$/conf/config_parse.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/configs/config.ini" beforeDir="false" afterPath="$PROJECT_DIR$/configs/config.ini" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/main.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/model/YOLO_classifier.py" beforeDir="false" afterPath="$PROJECT_DIR$/model/YOLO_classifier.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/doc/启动教程.md" beforeDir="false" afterPath="$PROJECT_DIR$/doc/启动教程.md" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/server/server.py" beforeDir="false" afterPath="$PROJECT_DIR$/server/server.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/service/img_worker.py" beforeDir="false" afterPath="$PROJECT_DIR$/service/img_worker.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/utils/img.py" beforeDir="false" afterPath="$PROJECT_DIR$/utils/img.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -70,13 +66,13 @@
     &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
     &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
     &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;kyrievin-patch-1&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;feat/compress&quot;,
     &quot;last_opened_file_path&quot;: &quot;E:/myrepository/GarbageSorting/imgs&quot;,
     &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
     &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
     &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
     &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;com.maddyhome.idea.vim.ui.VimEmulationConfigurable&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.pluginManager&quot;,
     &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
 }</component>
@@ -90,7 +86,7 @@
       <recent name="E:\myrepository\GarbageSorting" />
     </key>
   </component>
-  <component name="RunManager" selected="Python.main">
+  <component name="RunManager" selected="Flask server.GarbageSorting">
     <configuration name="demo.html" type="JavascriptDebugType" temporary="true" nameIsGenerated="true" uri="http://localhost:63342/GarbageSorting/demo/demo.html" useBuiltInWebServerPort="true">
       <method v="2" />
     </configuration>
@@ -199,7 +195,7 @@
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
       <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="WORKING_DIRECTORY" value="" />
       <option name="IS_MODULE_SDK" value="false" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
@@ -240,6 +236,7 @@
       <workItem from="1716196045369" duration="1032000" />
       <workItem from="1717486014639" duration="9194000" />
       <workItem from="1718269558212" duration="4867000" />
+      <workItem from="1718730992684" duration="2052000" />
     </task>
     <task id="LOCAL-00001" summary="feat">
       <option name="closed" value="true" />
@@ -275,12 +272,12 @@
       <breakpoints>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/server/server.py</url>
-          <line>53</line>
+          <line>40</line>
           <option name="timeStamp" value="13" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/server/server.py</url>
-          <line>59</line>
+          <line>46</line>
           <option name="timeStamp" value="14" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">

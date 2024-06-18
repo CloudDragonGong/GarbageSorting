@@ -3,7 +3,7 @@ import os
 import const
 import main
 from main import *
-from flask import send_file, flash, request, redirect, url_for, jsonify
+from flask import send_file, flash, request, redirect, url_for, jsonify , render_template
 from werkzeug.utils import secure_filename
 import utils
 from main import app, ALLOWED_EXTENSIONS
@@ -53,9 +53,12 @@ def SingleImgDownload(filename):
     image_path = os.path.join(app.config[DOWNLOAD_FOLDER], filename)
     if not os.path.exists(image_path):
         return response.response(500, const.SINGLE_IMG_NOT_FOUND)
+    # compress_image = utils.compress_image(image_path)
     return send_file(image_path, mimetype='image/jpg')
 
-
+@app.route("/demo")
+def Html():
+    return app.send_static_file("demo2.html")
 def response_test():
     return jsonify("ok")
 
