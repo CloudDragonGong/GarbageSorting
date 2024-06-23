@@ -1,151 +1,229 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>垃圾分类：图片部分</title>
-<style>
-  body
-  {
-    background-image:url(background.png);
-    background-size: 100% 100% ;
-  }
-  #title
-  {
-    width:70% ;
-    padding:5% ;
-    background: lightgrey ;
-    text-align: center;
-    /*border:1px solid gray;*/
-    border-radius: 10px 10px 10px 10px / 10px 10px 10px 10px;
-    position:relative;
-    left:10%;
-  }
-  #para_hint 
-  {
-    width:70% ;
-    padding:5% ;
-    background: lightgrey ;
-    text-align: center;
-    /*border:1px solid gray;*/
-    border-radius: 10px 10px 10px 10px / 10px 10px 10px 10px;
-    position:relative;
-    left:10%;
-  }
-  .button_inter
-  {
-    width:80% ;
-    height:50px ;
-    padding:10px ;
-    /*border:1px solid gray;*/
-    border-radius: 10px 10px 10px 10px / 10px 10px 10px 10px;
-    position:relative;
-    left:10%;
-  }
-  #image-preview {
-    display: flex;
-    flex-wrap: wrap;
-  }
-  .preview-item {
-    margin: 10px;
-    position: relative;
-  }
-  .preview-item img {
-    width: 300px;
-    height: 200px;
-    object-fit: cover;
-  }
-  .cancel-btn {
-    position: absolute;
-    top: 5px;
-    right: 5px;
-    width:80px;
-    height:30px;
-    background-color: red;
-    color: white;
-    border-radius: 10px 10px 10px 10px / 10px 10px 10px 10px;
-    /*
-    border: none;
-    border-radius: 50%;
-    padding: 5px;
-    cursor: pointer;*/
-  }
-</style>
+    <meta charset="UTF-8">
+    <title>Ajax</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <style>
+        body, html {
+            height: 100%;
+            margin: 0;
+        }
+        .container {
+            height: 100%;
+            background-clip: border-box;
+            -webkit-text-fill-color: inherit;
+            background-color: #befefa;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .main-body {
+            margin: 5%;
+            overflow: auto; /* 使内容可以滚动 */
+            height: 90%;
+            background-color: rgba(255, 255, 255, 0.6); /* 半透明背景 */
+            border: 1px solid #828282;
+            border-radius: 20px; /* 圆角 */
+            backdrop-filter: blur(10px); /* 毛玻璃效果 */
+            opacity: 1;
+            width: 80%;
+        }
+        .title {
+            display: block;
+            text-align: center;
+            font-size: 50px;
+            font-family: Arial, 'Helvetica Neue', Helvetica;
+            opacity: 1;
+        }
+        .subtitle {
+            text-align: center;
+            font-size: 40px;
+        }
+        .image-preview {
+            width: 300px;
+            height: 250px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .image-preview img {
+            width: 300px;
+            height: 200px;
+            max-width: 300px;
+            max-height:200px;
+        }
+        .buttons {
+            display: flex;
+            justify-content: space-between;
+            width: 100%;
+            margin-top: 5px;
+        }
+        .buttons button {
+            flex-grow: 1;
+            width: 80px;
+            height: 30px;
+            border-radius: 10px;
+        }
+        #Picture_rewiew {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-around;
+        }
+        .button-container {
+            display: flex;
+            justify-content: center;
+            margin-top: 20px;
+        }
+        .button-container button {
+            margin: 0 10px;
+        }
+    </style>
+    <script>
+        $(document).ready(function() {
+            const fileInput = $('#file-input');
+            const uploadButton = $('#Upload_Button');
+            const returnButton = $('#Return_Button');
+            const pictureReview = $('#Picture_rewiew');
+
+            fileInput.change(function(event) {
+                const files = event.target.files;
+                for (let i = 0; i < files.length; i++) {
+                    const file = files[i];
+                    const reader = new FileReader();
+                    reader.onload = function(e) {
+                        const imageUrl = e.target.result;
+                        addImagePreview(imageUrl, file);
+                    };
+                    reader.readAsDataURL(file);
+                }
+            });
+
+            uploadButton.click(function() {
+                fileInput.click();
+            });
+
+            returnButton.click(function() {
+                window.location.href = 'mainPage.html';
+            });
+
+            function addImagePreview(imageUrl, file) {
+                const imageId = 'image-' + new Date().getTime();
+                const imageContainer = $('<div>').addClass('image-preview').attr('id', imageId);
+                const img = $('<img>').attr('src', imageUrl);
+                const buttons = $('<div>').addClass('buttons');
+                const uploadBtn = $('<button>').text('上传').click(function() { compressAndUploadImage(imageId, file, $(this)); });
+                const fetchBtn = $('<button>').text('获取').click(function() { fetchImage(imageId, imageUrl); });
+                const deleteBtn = $('<button>').text('删除').click(function() { deleteImage(imageId); });
+
+                buttons.append(uploadBtn).append(fetchBtn).append(deleteBtn);
+                imageContainer.append(img).append(buttons);
+                pictureReview.append(imageContainer);
+            }
+
+            function compressAndUploadImage(imageId, file, uploadBtn) {
+                const img = new Image();
+                img.src = URL.createObjectURL(file);
+                img.onload = function() {
+                    const canvas = document.createElement('canvas');
+                    const maxWidth = 640;
+                    const maxHeight = 480;
+                    let width = img.width;
+                    let height = img.height;
+
+                    if (width > height) {
+                        if (width > maxWidth) {
+                            height *= maxWidth / width;
+                            width = maxWidth;
+                        }
+                    } else {
+                        if (height > maxHeight) {
+                            width *= maxHeight / height;
+                            height = maxHeight;
+                        }
+                    }
+
+                    canvas.width = width;
+                    canvas.height = height;
+                    const ctx = canvas.getContext('2d');
+                    ctx.drawImage(img, 0, 0, width, height);
+
+                    canvas.toBlob(function(blob) {
+                        const compressedFile = new File([blob], file.name, { type: file.type, lastModified: Date.now() });
+                        uploadImage(imageId, compressedFile, uploadBtn);
+                    }, file.type, 0.95);
+                };
+            }
+
+            function uploadImage(imageId, file, uploadBtn) {
+                const formData = new FormData();
+                formData.append('img', file);
+
+                $.ajax({
+                    url: 'http://39.107.107.212:17304/img_upload/single',
+                    type: 'POST',
+                    data: formData,
+                    processData: false,
+                    contentType: false,
+                    success: function(response) {
+                        if (response.data.image_url) {
+                            $('#' + imageId).data('image-url', 'http://39.107.107.212:17304' + response.data.image_url);
+                            alert('图片上传成功');
+                            uploadBtn.hide();
+                        } else {
+                            alert('Error: No image_url in response');
+                        }
+                    },
+                    error: function(xhr, status, error) {
+                        console.error('Error uploading image: ' + error);
+                    }
+                });
+            }
+
+            function fetchImage(imageId, fallbackUrl) {
+                const imageUrl = $('#' + imageId).data('image-url') || fallbackUrl;
+
+                $.ajax({
+                    url: imageUrl,
+                    type: 'GET',
+                    xhrFields: {
+                        responseType: 'blob'
+                    },
+                    success: function(data, status, xhr) {
+                        const urlCreator = window.URL || window.webkitURL;
+                        const imgUrl = urlCreator.createObjectURL(data);
+                        $('#' + imageId + ' img').attr('src', imgUrl);
+                    },
+                    error: function(xhr, status, error) {
+                        console.error('Error fetching image: ' + error);
+                    }
+                });
+            }
+
+            function deleteImage(imageId) {
+                $('#' + imageId).remove();
+            }
+        });
+    </script>
 </head>
 <body>
-<h1 id="title">垃圾分类</h1>
-<p id="para_hint">请选择图片，完成选择后点击上传</p>
-<input type="file" id="file-input" accept="image/*" multiple style="display: none;">
-<button onclick="document.getElementById('file-input').click();" id="add-btn" class="button_inter">添加图片</button>
-<button onclick="clearImages()" id="clear-btn" style="display: none;" class="button_inter">清除图片</button>
-<button onclick="uploadImages()" id="upload-btn" style="display: none;" class="button_inter">上传图片</button>
-<button onclick="resetRecognition()" id="reset-btn" style="display: none;" class="button_inter">重新识别</button>
-<a href="mainPage.html"><button class="button_inter">返回</button></a>
-<div id="image-preview"></div>
-
-<script>
-function uploadImages() {
-  alert("图片上传完成");
-  document.getElementById("clear-btn").style.display = "none";
-  document.getElementById("file-input").value = "";
-  document.getElementById("upload-btn").style.display = "none";
-  document.getElementById("reset-btn").style.display = "inline-block";
-  document.getElementById("add-btn").style.display = "none";
-
-  const previews = document.querySelectorAll(".preview-item");
-  previews.forEach(preview => {
-    const cancelButton = preview.querySelector(".cancel-btn");
-    cancelButton.remove();
-
-    const randomTrashType = ["塑料", "纸板", "玻璃", "易拉罐"][Math.floor(Math.random() * 4)];
-    const randomTrashCategory = ["可回收垃圾", "干垃圾"][Math.floor(Math.random() * 2)];
-    const resultText = document.createElement("p");
-    resultText.innerHTML = `识别结果：${randomTrashType} (${randomTrashCategory})`;
-    preview.appendChild(resultText);
-  });
-}
-
-function clearImages() {
-  document.getElementById("image-preview").innerHTML = "";
-  document.getElementById("clear-btn").style.display = "none";
-  document.getElementById("upload-btn").style.display = "none";
-  document.getElementById("reset-btn").style.display = "none";
-  document.getElementById("add-btn").style.display = "inline-block";
-}
-
-function resetRecognition() {
-  document.getElementById("image-preview").innerHTML = "";
-  document.getElementById("reset-btn").style.display = "none";
-  document.getElementById("file-input").value = "";
-  document.getElementById("add-btn").style.display = "inline-block";
-}
-
-document.getElementById("file-input").addEventListener("change", function(event) {
-  const files = event.target.files;
-  const previewContainer = document.getElementById("image-preview");
-  Array.from(files).forEach(file => {
-    const reader = new FileReader();
-    reader.onload = function() {
-      const img = document.createElement("img");
-      img.src = reader.result;
-      const previewItem = document.createElement("div");
-      previewItem.className = "preview-item";
-      previewItem.appendChild(img);
-      previewContainer.appendChild(previewItem);
-
-      const cancelButton = document.createElement("button");
-      cancelButton.innerHTML = "取消选择";
-      cancelButton.className = "cancel-btn";
-      cancelButton.addEventListener("click", () => {
-        previewItem.remove();
-      });
-      previewItem.appendChild(cancelButton);
-    }
-    reader.readAsDataURL(file);
-  });
-  document.getElementById("clear-btn").style.display = "inline-block";
-  document.getElementById("upload-btn").style.display = "inline-block";
-});
-</script>
+    <div class="container">
+        <div class="main-body" id="MainBody">
+            <div id="22364622">
+                <h1 id="mainTitle" class="title">模式识别与机器学习课程设计</h1>
+                <h1 id="Sub_titli" class="subtitle">垃圾分类识别</h1>
+            </div>
+            <div class="button-container">
+                <button id="Upload_Button" style="height: 50px; width: 25%;">
+                    <span>添加图片</span>
+                </button>
+                <button id="Return_Button" style="width: 25%; height: 50px;">
+                    <span>返回主页</span>
+                </button>
+            </div>
+            <input type="file" id="file-input" multiple style="display: none;">
+            <div style="margin-top: 10px; margin-left: 10%; margin-right: 10%; margin-bottom: 10px;" id="Picture_rewiew"></div>
+        </div>
+    </div>
 </body>
 </html>
