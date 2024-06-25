@@ -25,13 +25,13 @@ UPLOAD_FOLDER = 'imgs'
 IP = "127.0.0.1"
 PORT = 5000
 CONFIG_FILE = 'config.json'
-
-
+IP_INTERNAL  = 'ip_internal'
+MODE = 'mode'
 
 # init
 app = Flask(__name__)
 CORS(app)
-app.config[IP_ADDRESS], app.config[PORT], app.config[UPLOAD_FOLDER] ,app.config[DOWNLOAD_FOLDER] , app.config[MODLE_PATH] = conf.read_config(conf.read_argv())
+app.config[IP_ADDRESS], app.config[PORT], app.config[UPLOAD_FOLDER] ,app.config[DOWNLOAD_FOLDER] , app.config[MODLE_PATH] , app.config[IP_INTERNAL],app.config[MODE] = conf.read_config(conf.read_argv())
 yolo = model.YoloClassifier(app.config[MODLE_PATH], app.config[DOWNLOAD_FOLDER], app.config[DOWNLOAD_FOLDER])
 
 from server.server import *
@@ -40,4 +40,4 @@ from server.server import *
 
 
 if __name__ == '__main__':
-    app.run(host=app.config[IP_ADDRESS], port=app.config[PORT], debug=True)
+    app.run(host=app.config[IP_ADDRESS], port=app.config[PORT], debug=app.config[MODE])
