@@ -81,6 +81,7 @@
     </style>
     <script>
         $(document).ready(function() {
+            const serverUrl = '{{ server_url }}';
             const fileInput = $('#file-input');
             const uploadButton = $('#Upload_Button');
             const returnButton = $('#Return_Button');
@@ -160,14 +161,14 @@
                 formData.append('img', file);
 
                 $.ajax({
-                    url: 'http://39.107.107.212:17304/img_upload/single',
+                    url: serverUrl + '/img_upload/single',
                     type: 'POST',
                     data: formData,
                     processData: false,
                     contentType: false,
                     success: function(response) {
                         if (response.data.image_url) {
-                            $('#' + imageId).data('image-url', 'http://39.107.107.212:17304' + response.data.image_url);
+                            $('#' + imageId).data('image-url', serverUrl + response.data.image_url);
                             alert('图片上传成功');
                             uploadBtn.hide();
                         } else {
