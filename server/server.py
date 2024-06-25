@@ -67,7 +67,7 @@ def Html():
 @app.route("/sort")
 def Sort():
     # return app.send_static_file("pictureDivision.html")
-    server_url = request.args.get('server_url', 'http://'+app.config[IP_ADDRESS]+":"+app.config[PORT])
+    server_url = request.args.get('server_url', 'http://'+'127.0.0.1'+":"+app.config[PORT])
     return render_template("pictureDivision.html", server_url=server_url)
 
 
