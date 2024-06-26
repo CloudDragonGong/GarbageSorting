@@ -11,12 +11,12 @@ class ImgWorker():
         self.img_output_folder_path = img_output_folder_path
         self.worker = worker
 
-    def get_img_res(self, img_path) -> (str, str):
+    def get_img_res(self, img_path) -> (str,dict):
         try:
             output_filename = utils.generate_unique_file_name("output.png")
             _, type_map = self.worker.classify_one_img(img_path, output_filename)
             if output_filename is None:
                 return const.FILE_NOT_FOUND, None
-            return output_filename,str(type_map)
+            return output_filename,type_map
         except Exception as e:
             return str(e), None
