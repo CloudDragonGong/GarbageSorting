@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Ajax</title>
+    <title>模式识别课设_垃圾分类</title>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <style>
         body, html {
@@ -46,6 +46,7 @@
             display: flex;
             flex-direction: column;
             align-items: center;
+            margin: 5px;
         }
         .image-preview img {
             width: 300px;
@@ -57,26 +58,25 @@
             display: flex;
             justify-content: space-between;
             width: 100%;
-            margin-top: 5px;
         }
         .buttons button {
             flex-grow: 1;
-            width: 80px;
-            height: 30px;
-            border-radius: 10px;
+            width: 200px;
+            height: 40px;
         }
         #Picture_rewiew {
             display: flex;
             flex-wrap: wrap;
             justify-content: space-around;
+            margin: 5px;
         }
         .button-container {
             display: flex;
             justify-content: center;
-            margin-top: 20px;
+            flex-wrap: wrap;
         }
         .button-container button {
-            margin: 0 10px;
+            margin: 5px;
         }
     </style>
     <script>
@@ -85,6 +85,29 @@
             const uploadButton = $('#Upload_Button');
             const returnButton = $('#Return_Button');
             const pictureReview = $('#Picture_rewiew');
+            const uploadAllButton = $('#Upload_All_Button');
+            const deleteAllButton = $('#Delete_All_Button');
+
+            uploadAllButton.click(function() {
+                const images = $('.image-preview');
+                if (images.length === 0) {
+                    alert('请先添加图片');
+                    return;
+                }
+                images.each(function() {
+                    const imageId = $(this).attr('id');
+                    const file = $(this).data('file');
+                    const uploadBtn = $(this).find('button:contains("上传")');
+                    const typeLabel = $(this).find('.type-label');
+                    compressAndUploadImage(imageId, file, uploadBtn, typeLabel);
+                });
+            });
+
+            deleteAllButton.click(function() {
+                if (confirm('确认删除？')) {
+                    pictureReview.empty();
+                }
+            });
 
             fileInput.change(function(event) {
                 const files = event.target.files;
@@ -109,19 +132,20 @@
 
             function addImagePreview(imageUrl, file) {
                 const imageId = 'image-' + new Date().getTime();
-                const imageContainer = $('<div>').addClass('image-preview').attr('id', imageId);
+                const imageContainer = $('<div>').addClass('image-preview').attr('id', imageId).data('file', file);
                 const img = $('<img>').attr('src', imageUrl);
+                const typeLabel = $('<div>').addClass('type-label').text('上传图片以获取类别');
                 const buttons = $('<div>').addClass('buttons');
-                const uploadBtn = $('<button>').text('上传').click(function() { compressAndUploadImage(imageId, file, $(this)); });
-                const fetchBtn = $('<button>').text('获取').click(function() { fetchImage(imageId, imageUrl); });
+                const uploadBtn = $('<button>').text('上传').click(function() { compressAndUploadImage(imageId, file, $(this), typeLabel); });
+                const fetchBtn = $('<button>').text('获取').hide().click(function() { fetchImage(imageId, imageUrl); });
                 const deleteBtn = $('<button>').text('删除').click(function() { deleteImage(imageId); });
 
                 buttons.append(uploadBtn).append(fetchBtn).append(deleteBtn);
-                imageContainer.append(img).append(buttons);
+                imageContainer.append(img).append(typeLabel).append(buttons);
                 pictureReview.append(imageContainer);
             }
 
-            function compressAndUploadImage(imageId, file, uploadBtn) {
+            function compressAndUploadImage(imageId, file, uploadBtn, typeLabel) {
                 const img = new Image();
                 img.src = URL.createObjectURL(file);
                 img.onload = function() {
@@ -150,12 +174,12 @@
 
                     canvas.toBlob(function(blob) {
                         const compressedFile = new File([blob], file.name, { type: file.type, lastModified: Date.now() });
-                        uploadImage(imageId, compressedFile, uploadBtn);
+                        uploadImage(imageId, compressedFile, uploadBtn, typeLabel);
                     }, file.type, 0.95);
                 };
             }
 
-            function uploadImage(imageId, file, uploadBtn) {
+            function uploadImage(imageId, file, uploadBtn, typeLabel) {
                 const formData = new FormData();
                 formData.append('img', file);
 
@@ -166,12 +190,42 @@
                     processData: false,
                     contentType: false,
                     success: function(response) {
-                        if (response.data.image_url) {
-                            $('#' + imageId).data('image-url', 'http://39.107.107.212:17304' + response.data.image_url);
-                            alert('图片上传成功');
+                        if (response.data.image_url && response.data.type) {
+                            const imageUrl = 'http://39.107.107.212:17304' + response.data.image_url;
+                            $('#' + imageId).data('image-url', imageUrl);
+                            const imageType = response.data.type;
+                            let words = imageType.split("\'");
+                            if(words[3]=="yes")
+                            {
+                                switch(words[1])
+                                {
+                                    case 'cardboard':
+                                        words[1]='纸板';
+                                        break;
+                                    case 'glass':
+                                        words[1]='玻璃';
+                                        break;
+                                    case 'metal':
+                                        words[1]='金属';
+                                        break;
+                                    case 'paper':
+                                        words[1]='纸张';
+                                        break;
+                                    case 'plastic':
+                                        words[1]='塑料';
+                                        break;
+                                    default:
+                                        words[1]='其它';
+                                        break;
+                                }
+                                typeLabel.text('该垃圾为'+words[1]+'，为可回收垃圾');
+                            }
+                            else
+                                typeLabel.text('该垃圾为其它垃圾，不可回收');
                             uploadBtn.hide();
+                            $('#' + imageId).find('button:contains("获取")').show();
                         } else {
-                            alert('Error: No image_url in response');
+                            alert('Error: No image_url or type in response');
                         }
                     },
                     error: function(xhr, status, error) {
@@ -219,6 +273,14 @@
                 </button>
                 <button id="Return_Button" style="width: 25%; height: 50px;">
                     <span>返回主页</span>
+                </button>
+            </div>
+            <div class="button-container">
+                <button id="Upload_All_Button" style="height: 50px; width: 25%;">
+                    <span>全部上传</span>
+                </button>
+                <button id="Delete_All_Button" style="width: 25%; height: 50px;">
+                    <span>全部删除</span>
                 </button>
             </div>
             <input type="file" id="file-input" multiple style="display: none;">
