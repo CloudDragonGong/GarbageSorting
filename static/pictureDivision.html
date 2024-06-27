@@ -42,17 +42,19 @@
         }
         .image-preview {
             width: 300px;
-            height: 250px;
+            min-height: 250px;
             display: flex;
             flex-direction: column;
             align-items: center;
             margin: 5px;
+            overflow: hidden;
+            position: relative;
         }
         .image-preview img {
             width: 300px;
             height: 200px;
             max-width: 300px;
-            max-height:200px;
+            max-height: 200px;
         }
         .buttons {
             display: flex;
@@ -61,8 +63,13 @@
         }
         .buttons button {
             flex-grow: 1;
-            width: 200px;
+            width: 100px;
             height: 40px;
+        }
+        .type-label {
+            white-space: pre-line; /* 允许换行 */
+            margin-top: 10px;
+            text-align: center;
         }
         #Picture_rewiew {
             display: flex;
@@ -141,7 +148,7 @@
                 const deleteBtn = $('<button>').text('删除').click(function() { deleteImage(imageId); });
 
                 buttons.append(uploadBtn).append(fetchBtn).append(deleteBtn);
-                imageContainer.append(img).append(typeLabel).append(buttons);
+                imageContainer.append(img).append(buttons).append(typeLabel);
                 pictureReview.append(imageContainer);
             }
 
@@ -193,35 +200,22 @@
                         if (response.data.image_url && response.data.type) {
                             const imageUrl = 'http://39.107.107.212:17304' + response.data.image_url;
                             $('#' + imageId).data('image-url', imageUrl);
-                            const imageType = response.data.type;
-                            let words = imageType.split("\'");
-                            if(words[3]=="yes")
-                            {
-                                switch(words[1])
-                                {
-                                    case 'cardboard':
-                                        words[1]='纸板';
-                                        break;
-                                    case 'glass':
-                                        words[1]='玻璃';
-                                        break;
-                                    case 'metal':
-                                        words[1]='金属';
-                                        break;
-                                    case 'paper':
-                                        words[1]='纸张';
-                                        break;
-                                    case 'plastic':
-                                        words[1]='塑料';
-                                        break;
-                                    default:
-                                        words[1]='其它';
-                                        break;
-                                }
-                                typeLabel.text('该垃圾为'+words[1]+'，为可回收垃圾');
-                            }
-                            else
-                                typeLabel.text('该垃圾为其它垃圾，不可回收');
+                            let output = "";
+                            if(response.data.type.paper=="yes")
+                                output += "识别到纸张，为可回收垃圾\n";
+                            if(response.data.type.cardboard=="yes")
+                                output += "识别到硬纸板，为可回收垃圾\n";
+                            if(response.data.type.metal=="yes")
+                                output += "识别到金属，为可回收垃圾\n";
+                            if(response.data.type.glass=="yes")
+                                output += "识别到玻璃，为可回收垃圾\n";
+                            if(response.data.type.plastic=="yes")
+                                output += "识别到塑料，为可回收垃圾\n";
+                            if(response.data.type.trash=="no")
+                                output += "识别到其它垃圾，为不可回收垃圾\n";
+
+                            alert(output);
+                            typeLabel.text(output.trim()); // 移除末尾换行
                             uploadBtn.hide();
                             $('#' + imageId).find('button:contains("获取")').show();
                         } else {
