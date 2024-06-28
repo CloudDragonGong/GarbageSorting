@@ -134,7 +134,7 @@
             });
 
             returnButton.click(function() {
-                window.location.href = 'mainPage.html';
+                window.location.href = '/';
             });
 
             function addImagePreview(imageUrl, file) {
@@ -201,20 +201,40 @@
                             const imageUrl = 'http://39.107.107.212:17304' + response.data.image_url;
                             $('#' + imageId).data('image-url', imageUrl);
                             let output = "";
+                            let number = 0 ;
                             if(response.data.type.paper=="yes")
+                            {
+                                number++;
                                 output += "识别到纸张，为可回收垃圾\n";
+                            }
                             if(response.data.type.cardboard=="yes")
+                            {
+                                number++;
                                 output += "识别到硬纸板，为可回收垃圾\n";
+                            }
                             if(response.data.type.metal=="yes")
+                            {
+                                number++;
                                 output += "识别到金属，为可回收垃圾\n";
+                            }
                             if(response.data.type.glass=="yes")
+                            {
+                                number++;
                                 output += "识别到玻璃，为可回收垃圾\n";
+                            }
                             if(response.data.type.plastic=="yes")
+                            {
+                                number++;
                                 output += "识别到塑料，为可回收垃圾\n";
+                            }
                             if(response.data.type.trash=="no")
+                            {
+                                number++;
                                 output += "识别到其它垃圾，为不可回收垃圾\n";
-
-                            alert(output);
+                            }
+                            if(number == 0)
+                                output = "未识别到垃圾";
+                            //alert(output);
                             typeLabel.text(output.trim()); // 移除末尾换行
                             uploadBtn.hide();
                             $('#' + imageId).find('button:contains("获取")').show();
