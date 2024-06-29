@@ -1,56 +1,73 @@
 <!DOCTYPE html>
-<html>
-
+<html lang="en">
 <head>
     <meta charset="utf-8">
     <title>垃圾分类主页面</title>
     <style>
-        body
-        {
-            background-image:url(background.png);
-            background-size: 100% 100% ;
+        body, html {
+            height: 100%;
+            margin: 0;
         }
-        #title
-        {
-            width:70% ;
-            padding:5% ;
-            background: lightgrey ;
+        .container {
+            height: 100%;
+            background-clip: border-box;
+            -webkit-text-fill-color: inherit;
+            background-color: #befefa;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .main-body {
+            margin: 5%;
+            overflow: auto; /* 使内容可以滚动 */
+            height: 90%;
+            background-color: rgba(255, 255, 255, 0.6); /* 半透明背景 */
+            border: 1px solid #828282;
+            border-radius: 20px; /* 圆角 */
+            backdrop-filter: blur(10px); /* 毛玻璃效果 */
+            opacity: 1;
+            width: 80%;
+        }
+        .title {
+            display: block;
             text-align: center;
-            /*border:1px solid gray;*/
-            border-radius: 10px 10px 10px 10px / 10px 10px 10px 10px;
-            position:relative;
-            left:10%;
+            font-size: 50px;
+            font-family: Arial, 'Helvetica Neue', Helvetica;
+            opacity: 1;
         }
-        #para_hint 
-        {
-            width:70% ;
-            padding:5% ;
-            background: lightgrey ;
+        .subtitle {
             text-align: center;
-            /*border:1px solid gray;*/
-            border-radius: 10px 10px 10px 10px / 10px 10px 10px 10px;
-            position:relative;
-            left:10%;
+            font-size: 40px;
         }
-        button
-        {
-            width:80% ;
-            height:50px ;
-            padding:10px ;
-            /*border:1px solid gray;*/
-            border-radius: 10px 10px 10px 10px / 10px 10px 10px 10px;
-            position:relative;
-            left:10%;
+        .button-container {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-top: 20px;
+        }
+        .button-container a {
+            text-decoration: none; /* 去除超链接的下划线 */
+            width: 80%;
+            margin: 10px;
+        }
+        .button-container button {
+            width: 100%;
+            height: 50px;
+            border-radius: 10px;
+            padding: 10px;
         }
     </style>
 </head>
-
-<h1 id="title">垃圾分类</h1>
-<br>
-<p id="para_hint">请选择功能</p>
-<br>
-<a href="../template/pictureDivision.html"><button>图片识别</button></a>
-<a href="videoDivision.html"><button>视频识别</button></a>
-<a href="about.html"><button>鸣谢</button></a>
-
+<body>
+    <div class="container">
+        <div class="main-body" id="MainBody">
+            <h1 id="title" class="title">垃圾分类</h1>
+            <p id="para_hint" class="subtitle">请选择功能</p>
+            <div class="button-container">
+                <a href='/picture'><button>图片识别</button></a>
+                <a href='/about'><button>鸣谢</button></a>
+            </div>
+        </div>
+    </div>
+</body>
 </html>
