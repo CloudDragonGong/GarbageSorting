@@ -14,7 +14,9 @@ def read_config(config_path):
     upload_folder = config_handler['img_path']['upload_folder']
     download_folder = config_handler['img_path']['download_folder']
     model_path = config_handler['models']['model_path']
-    return ip, port, upload_folder,download_folder,model_path
+    ip_address = config_handler['external']['ip']
+    debug_mode = config_handler.getboolean('setting', 'debug_mode')
+    return ip, port, upload_folder,download_folder,model_path,ip_address,debug_mode
 
 def read_argv():
     config_path = ''
