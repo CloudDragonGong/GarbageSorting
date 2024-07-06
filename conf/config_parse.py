@@ -2,7 +2,7 @@ import os
 import configparser
 import getopt
 import sys
-
+# 解析 config
 def read_config(config_path):
     if not os.path.exists(config_path):
         print("config not found")
@@ -17,7 +17,7 @@ def read_config(config_path):
     ip_address = config_handler['external']['ip']
     debug_mode = config_handler.getboolean('setting', 'debug_mode')
     return ip, port, upload_folder,download_folder,model_path,ip_address,debug_mode
-
+# 读取命令行入参
 def read_argv():
     config_path = ''
     try:

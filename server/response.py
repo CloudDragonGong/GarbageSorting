@@ -1,7 +1,7 @@
 from flask import jsonify
 from sqlalchemy.orm import DeclarativeMeta
 
-
+# web工具 函数集
 def response(code=200, message='', data=None):
     """
     自定义返回结果的封装函数

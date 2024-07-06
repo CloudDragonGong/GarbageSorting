@@ -4,12 +4,14 @@ from tqdm import tqdm
 from ultralytics import YOLO
 import torch
 import const
+
+# 模型类 加载模型 分类任务
 class YoloClassifier():
     def __init__(self, model_path, img_out_folder, video_out_folder):
         self.img_out_folder = img_out_folder
         self.video_out_folder = video_out_folder
         self.model = YOLO(model_path)
-
+# 图片分类
     def classify_one_img(self, img_path, img_out_filename):
         if not os.path.isfile(img_path):
             raise FileNotFoundError(f"File {img_path} not found.")
@@ -33,7 +35,7 @@ class YoloClassifier():
             cv2.imwrite(save_path, resimg)
         print("******Classification result of single image saved ,and type :" + save_path + "  " + str(type_list) + "******")
         return save_path,type_list
-
+# 视频分类 
     def classify_video(self,video_path,video_out_filename):
         save_path = os.path.join(self.video_out_folder, video_out_filename)
         if not os.path.exists(self.video_out_folder):

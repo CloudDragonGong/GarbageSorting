@@ -16,7 +16,7 @@ def allowed_file(filename):
     return '.' in filename and \
         filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
-
+# 上传图片并分类
 @app.post('/img_upload/single')
 def SingleImgUpload():
     """
@@ -47,7 +47,7 @@ def SingleImgUpload():
     app.logger.error("file is not allowed or none")
     return response.response(500, "file is not allowed or none")
 
-
+# 下载图片
 @app.route('/img_download/<filename>')
 def SingleImgDownload(filename):
     image_path = os.path.join(app.config[DOWNLOAD_FOLDER], filename)
@@ -58,12 +58,12 @@ def SingleImgDownload(filename):
 def response_test():
     return jsonify("ok")
 
-
+# demo测试接口（生产环境不用）
 @app.route("/demo")
 def Html():
     return app.send_static_file("demo2.html")
 
-
+# 返回模版
 @app.route("/sort")
 def Sort():
     # return app.send_static_file("pictureDivision.html")
@@ -72,7 +72,7 @@ def Sort():
 
 
 
-
+# 测试使用（生产环境不用）
 @app.post("/img_upload_test")
 def SingleImgSave():
     if 'imgs' not in request.files:
